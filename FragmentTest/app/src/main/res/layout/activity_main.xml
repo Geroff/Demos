@@ -10,12 +10,18 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         />
-    <fragment
-        android:id="@+id/rightfragment"
-        android:name="com.sharedream.fragmenttest.fragment.RightFragment"
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        />
+        android:layout_weight="1">
+        <fragment
+            android:id="@+id/rightfragment"
+            android:name="com.sharedream.fragmenttest.fragment.RightFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+    </FrameLayout>
+
 
 </LinearLayout>
