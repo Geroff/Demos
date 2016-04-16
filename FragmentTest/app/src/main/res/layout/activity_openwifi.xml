@@ -3,11 +3,17 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff00ffff">
+    >
     <Button
-        android:id="@+id/btn_thirdfragment_showdialog"
+        android:id="@+id/changemode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Third"/>
+        android:text="My Method"/>
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
 
 </LinearLayout>
