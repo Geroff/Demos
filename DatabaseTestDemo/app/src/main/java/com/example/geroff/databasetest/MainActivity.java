@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,12 +24,12 @@ public class MainActivity extends Activity {
     private Button btnDel;
     private Button btnUpdate;
     private Button btnQuery;
-    private String newId;
+    private SQLOpenHelperUtils dbHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_main);
-//        dbHelper = new SQLOpenHelperUtils(MainActivity.this, "student.db", null, 2);
+        dbHelper = new SQLOpenHelperUtils(MainActivity.this, "student.db", null, 2);
 
         info = (TextView) findViewById(R.id.tv_info);
         btnAdd = (Button) findViewById(R.id.btn_add);
@@ -41,40 +40,46 @@ public class MainActivity extends Activity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues contentValues = new ContentValues();
-                contentValues.put("number", 90507234);
+                contentValues.put("number", 90507232);
                 contentValues.put("name", "Geroff");
                 contentValues.put("sex", "male");
-               getContentResolver().insert(Uri.parse("content://com.example.geroff.contentprovidertest.provider/student"), contentValues);
+                db.insert("student", null, contentValues);
                 contentValues.clear();
-                contentValues.put("number", 90507235);
+                contentValues.put("number", 90507231);
                 contentValues.put("name", "Lu");
                 contentValues.put("sex", "female");
-               Uri newUri = getContentResolver().insert(Uri.parse("content://com.example.geroff.contentprovidertest.provider/student"), contentValues);
-                newId = newUri.getPathSegments().get(1);
-                info.setText(newId);
+                db.insert("student", null, contentValues);
+                db.close();
+                info.setText(queryInfo());
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
                 ContentValues cv = new ContentValues();
                 cv.put("name", "Chen");
-                getContentResolver().update(Uri.parse("content://com.example.geroff.contentprovidertest.provider/student/" + newId), cv, null, null);
+                db.update("student", cv, "name = ?", new String[]{"Lu"});
+                db.close();
+                info.setText(queryInfo());
             }
         });
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getContentResolver().delete(Uri.parse("content://com.example.geroff.contentprovidertest.provider/student/" + newId), null, null);
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                db.delete("student", "name=?", new String[]{"Chen"});
+                db.close();
+                info.setText(queryInfo());
             }
         });
         btnQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Cursor cursor = getContentResolver().query(Uri.parse("content://com.example.geroff.contentprovidertest.provider/student"), null, null, null, null);
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                Cursor cursor = db.query("student", null, null, null, null, null, null);
                 StringBuffer stringBuffer = new StringBuffer();
                 if (cursor.moveToFirst()) {
                     do {
@@ -90,7 +95,7 @@ public class MainActivity extends Activity {
         });
 
     }
-  /*  private String queryInfo(){
+    private String queryInfo(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.query("student", null, null, null, null, null, null);
         StringBuffer stringBuffer = new StringBuffer();
@@ -101,5 +106,5 @@ public class MainActivity extends Activity {
         }
         cursor.close();
         return stringBuffer.toString();
-    }*/
+    }
 }
