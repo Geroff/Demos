@@ -18,7 +18,7 @@ public class MyProvider extends ContentProvider {
     private final static int STUDENT_ITEM = 1;
     private final static int CATEGORY_TABLE = 2;
     private final static int CATEGORY_ITEM = 3;
-    private final static String AUTHORITY = "com.example.geroff.contentprovidertest";
+    private final static String AUTHORITY = "com.example.geroff.contentprovidertest.provider";
 
     private SQLOpenHelperUtils dbHelper;
     private static UriMatcher uriMatcher;
